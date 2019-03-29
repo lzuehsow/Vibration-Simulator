@@ -47,9 +47,8 @@ res(2) = Z(4); % dTheta2dt
 % res(3) = (-(k1 + k2) * Z(1) + (k1*l1 - k2*l2) * Z(2)) / m;
 % res(4) = ((l1*k1 - l2*k2) * Z(1) - ((l1^2)*k1 + (l2^2)*k2) * Z(2)) / I;
 
-K = [k1+k2 (-k1*l1 + k2*l2); (-k1*l1 + k2*l2) ((l1^2)*k1 + (l2^2)*k2)];
-res(3) = (-K(1) * Z(1) + -K(2) * Z(2)) / m;
-res(4) = (-K(3) * Z(1) - K(4) * Z(2)) / I;
+res(3) = (-K(1) * Z(1) + -K(2) * Z(2) - C(1) * Z(3) - C(2) * Z(4)) / m;
+res(4) = (-K(3) * Z(1) + -K(4) * Z(2) - C(3) * Z(3) - C(4) * Z(4)) / I;
 end
 
 %% Analytical Soln
@@ -67,9 +66,9 @@ undamped = [q_init(1) * cos(sqrt(eigval(1)) * t_span) + (q_init(3)/sqrt(eigval(1
 q_init(2) * cos(sqrt(eigval(4)) * t_span) + (q_init(4)/sqrt(eigval(4))) * sin(sqrt(eigval(2)) * t_span)];
 
 underdamped = [exp(-zeta(1) * sqrt(eigval(1)) * t_span) .* ...
-    (q_init(1) * cos(Wd(1) * t_span) + ((q_init(2) + zeta(1) * sqrt(eigval(1)) * q_init(1)) / Wd(1)) * sin(Wd(1) * t_span)); ...
+    (q_init(1) * cos(Wd(1) * t_span) + ((q_init(3) + zeta(1) * sqrt(eigval(1)) * q_init(1)) / Wd(1)) * sin(Wd(1) * t_span)); ...
     exp(-zeta(4) * sqrt(eigval(4)) * t_span) .* ...
-    (q_init(3) * cos(Wd(4) * t_span) + ((q_init(4) + zeta(4) * sqrt(eigval(3)) * q_init(3)) / Wd(4)) * sin(Wd(4) * t_span))];
+    (q_init(2) * cos(Wd(4) * t_span) + ((q_init(4) + zeta(4) * sqrt(eigval(3)) * q_init(3)) / Wd(4)) * sin(Wd(4) * t_span))];
 
 % Equation of motion converted to x space
 undamped_analytical = L_inv * P * undamped;
